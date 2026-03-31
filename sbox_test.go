@@ -1,10 +1,11 @@
 package ascon_test
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/edipermadi/ascon-lab"
-	"github.com/stretchr/testify/require"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestSBOX(t *testing.T) {
@@ -13,7 +14,9 @@ func TestSBOX(t *testing.T) {
 		0x1e, 0x13, 0x07, 0x0e, 0x00, 0x0d, 0x11, 0x18, 0x10, 0x0c, 0x01, 0x19, 0x16, 0x0a, 0x0f, 0x17,
 	}
 	for i := uint(0); i < 32; i++ {
-		require.Equal(t, results[i], ascon.SBOX(i))
+		expected := results[i]
+		actual := ascon.SBOX(i)
+		assert.Equal(t, expected, actual, fmt.Sprintf("SBOX %d, expected %02x, actual %02x", i, expected, actual))
 	}
 }
 
