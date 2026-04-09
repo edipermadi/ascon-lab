@@ -419,3 +419,7 @@ func TestNewWord(t *testing.T) {
 		})
 	}
 }
+
+func TestWord_XOR(t *testing.T) {
+	a := ""
+}

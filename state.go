@@ -1,15 +1,28 @@
 package ascon
 
-import "encoding/binary"
+import (
+	"encoding/binary"
+	"fmt"
+	"strings"
+)
 
 type State [5]Word
 
-func (s *State) Initialize(key [16]byte, nonce [16]byte) {
+func (s *State) Initialize(key [16]uint8, nonce [16]uint8) {
 	s[0] = NewWord(0x00001000808c0001)
-	s[1] = NewWord(binary.BigEndian.Uint64(key[0:4]))
-	s[2] = NewWord(binary.BigEndian.Uint64(key[4:]))
-	s[3] = NewWord(binary.BigEndian.Uint64(nonce[0:4]))
-	s[4] = NewWord(binary.BigEndian.Uint64(nonce[4:]))
+	s[1] = NewWord(binary.BigEndian.Uint64(key[0:8]))
+	s[2] = NewWord(binary.BigEndian.Uint64(key[8:]))
+	s[3] = NewWord(binary.BigEndian.Uint64(nonce[0:8]))
+	s[4] = NewWord(binary.BigEndian.Uint64(nonce[8:]))
+
+	s.Permutate(12)
+
+	s[3] = s[3].XOR(NewWord(binary.BigEndian.Uint64(key[0:8])))
+	s[4] = s[3].XOR(NewWord(binary.BigEndian.Uint64(key[8:])))
+
+	// begin process AD
+	// end process AD
+	s[4] = s[4].XOR(NewWord(0x8000000000000000))
 }
 
 func (s *State) Permutate(n int) {
@@ -44,4 +57,12 @@ func (s *State) Round(c uint64) {
 	s[2] = t[2].XOR(t[2].ROR(1)).XOR(t[2].ROR(6))
 	s[3] = t[3].XOR(t[3].ROR(10)).XOR(t[3].ROR(17))
 	s[4] = t[4].XOR(t[4].ROR(7)).XOR(t[4].ROR(41))
+}
+
+func (s State) Dump() string {
+	var builder strings.Builder
+	for i := 0; i < 5; i++ {
+		builder.WriteString(fmt.Sprintf("%x ", s[i].UInt()))
+	}
+	return builder.String()
 }
