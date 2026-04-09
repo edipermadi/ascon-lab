@@ -11,15 +11,31 @@ func NewWord(v uint64) Word {
 	return w
 }
 
-func (w *Word) RotateLeft() {
-	t := w[0]
-	for i := 0; i < len(w)-1; i++ {
-		w[i] = w[i+1]
+func (w Word) ROL(n int) Word {
+	x := w
+	for j := 0; j < n; j++ {
+		t := x[0]
+		for i := 0; i < len(w)-1; i++ {
+			x[i] = x[i+1]
+		}
+		x[len(w)-1] = t
 	}
-	w[len(w)-1] = t
+	return x
 }
 
-func (w *Word) XOR(x Word) Word {
+func (w Word) ROR(n int) Word {
+	x := w
+	for j := 0; j < n; j++ {
+		t := x[len(w)-1]
+		for i := 0; i < len(w)-1; i++ {
+			x[i+1] = x[i]
+		}
+		x[0] = t
+	}
+	return x
+}
+
+func (w Word) XOR(x Word) Word {
 	var y Word
 	for i := 0; i < len(w); i++ {
 		y[i] = w[i] != x[i]
@@ -27,7 +43,23 @@ func (w *Word) XOR(x Word) Word {
 	return y
 }
 
-func (w *Word) UInt() uint64 {
+func (w Word) AND(x Word) Word {
+	var y Word
+	for i := 0; i < len(w); i++ {
+		y[i] = w[i] && x[i]
+	}
+	return y
+}
+
+func (w Word) Not() Word {
+	var y Word
+	for i := 0; i < len(w); i++ {
+		y[i] = !w[i]
+	}
+	return y
+}
+
+func (w Word) UInt() uint64 {
 	var y uint64
 	for i := 0; i < len(w); i++ {
 		y = y << 1
