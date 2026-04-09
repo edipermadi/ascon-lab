@@ -413,7 +413,9 @@ func TestNewWord(t *testing.T) {
 
 	for _, tc := range testCases {
 		t.Run(fmt.Sprintf("Given_%s", strconv.FormatUint(tc.Given, 16)), func(t *testing.T) {
-			assert.Equal(t, tc.Expected, ascon.NewWord(tc.Given))
+			w := ascon.NewWord(tc.Given)
+			assert.Equal(t, tc.Expected, w)
+			assert.Equal(t, tc.Given, w.UInt(), "expected %v actual %v", tc.Given, w.UInt())
 		})
 	}
 }

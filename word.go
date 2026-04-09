@@ -30,10 +30,10 @@ func (w *Word) XOR(x Word) Word {
 func (w *Word) UInt() uint64 {
 	var y uint64
 	for i := 0; i < len(w); i++ {
+		y = y << 1
 		if w[i] {
 			y = y | 1
 		}
-		y = y << 1
 	}
 	return y
 }
