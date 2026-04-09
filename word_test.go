@@ -9,7 +9,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestWord_Assign(t *testing.T) {
+func TestNewWord(t *testing.T) {
 	type testCase struct {
 		Given    uint64
 		Expected ascon.Word
@@ -413,8 +413,7 @@ func TestWord_Assign(t *testing.T) {
 
 	for _, tc := range testCases {
 		t.Run(fmt.Sprintf("Given_%s", strconv.FormatUint(tc.Given, 16)), func(t *testing.T) {
-			w := ascon.NewWord(tc.Given)
-			assert.Equal(t, tc.Expected, w)
+			assert.Equal(t, tc.Expected, ascon.NewWord(tc.Given))
 		})
 	}
 }
