@@ -38,11 +38,12 @@ func TestDualRailSBOX(t *testing.T) {
 		0x1e, 0x13, 0x07, 0x0e, 0x00, 0x0d, 0x11, 0x18, 0x10, 0x0c, 0x01, 0x19, 0x16, 0x0a, 0x0f, 0x17,
 	}
 	for i := uint(0); i < 32; i++ {
+		j := i ^ 0x1f
 		expected := results[i]
 		expectedShadow := (expected ^ 0x1f) & 0x1f
 		actual := ascon.FactoredSBOX(i)
-		shadow := ascon.ShadowSBOX(i)
+		shadow := ascon.ShadowSBOX(j)
 		assert.Equal(t, expected, actual, fmt.Sprintf("SBOX %d, expected %02x, actual %02x", i, expected, actual))
-		assert.Equal(t, expectedShadow, shadow, fmt.Sprintf("ShadowSBOX %d, expected %02x, actual %02x", i, expectedShadow, shadow))
+		assert.Equal(t, expectedShadow, shadow, fmt.Sprintf("ShadowSBOX %d, expected %02x, actual %02x", j, expectedShadow, shadow))
 	}
 }
