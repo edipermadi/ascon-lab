@@ -40,6 +40,18 @@ func FactoredSBOX(in uint) uint {
 	return pack(y0, y1, y2, y3, y4)
 }
 
+func ShadowSBOX(in uint) uint {
+	x0, x1, x2, x3, x4 := unpack(in)
+
+	y0 := xor(and(x4, x1), x3, and(x2, x1), x2, and(x1, x0), x1, x0, true)
+	y1 := xor(x4, and(x3, x2), and(x3, x1), x3, and(x2, x1), x2, x1, x0, true)
+	y2 := xor(and(x4, x3), x4, x2, x1)
+	y3 := xor(and(x4, x0), x4, and(x3, x0), x3, x2, x1, x0, true)
+	y4 := xor(and(x4, x1), x4, x3, and(x1, x0), x1, true)
+
+	return pack(y0, y1, y2, y3, y4)
+}
+
 func unpack(in uint) (bool, bool, bool, bool, bool) {
 	x0 := ((in >> 4) & 1) > 0
 	x1 := ((in >> 3) & 1) > 0
