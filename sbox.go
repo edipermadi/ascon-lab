@@ -45,7 +45,7 @@ func FactoredSBOX(in uint) uint {
 	return pack(y0, y1, y2, y3, y4)
 }
 
-func ShadowSBOX(in uint) uint {
+func FactoredShadowSBOX(in uint) uint {
 	x0, x1, x2, x3, x4 := unpack(in)
 
 	a0 := xor(xor(x4, x0), true)
@@ -69,6 +69,18 @@ func ShadowSBOX(in uint) uint {
 	y2 := xor(c2, true)
 	y3 := xor(c3, c2, true)
 	y4 := c4
+
+	return pack(y0, y1, y2, y3, y4)
+}
+
+func BasicShadowSBOX(in uint) uint {
+	x0, x1, x2, x3, x4 := unpack(in)
+
+	y0 := xor(and(x4, x1), and(x2, x1), and(x1, x0), x4, x3)
+	y1 := xor(and(x3, x2), and(x3, x1), and(x2, x1), x4, x3, x2, x1, x0, true)
+	y2 := xor(and(x4, x3), x3, x2, x1)
+	y3 := xor(and(x4, x0), and(x3, x0), x2, x1, x0)
+	y4 := xor(and(x4, x1), and(x1, x0), x3, x1, x0)
 
 	return pack(y0, y1, y2, y3, y4)
 }
